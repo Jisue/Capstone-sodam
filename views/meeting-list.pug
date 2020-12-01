@@ -1,0 +1,155 @@
+doctype html
+head
+  title 회의목록 | 소담
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge,chrome=1')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
+  // VENDOR CSS
+  link(rel='stylesheet' href='assets/vendor/bootstrap/css/bootstrap.min.css')
+  link(rel='stylesheet' href='assets/vendor/font-awesome/css/font-awesome.min.css')
+  link(rel='stylesheet' href='assets/vendor/linearicons/style.css')
+  // MAIN CSS
+  link(rel='stylesheet' href='assets/css/main.css')
+  // FOR DEMO PURPOSES ONLY. You should remove this in your project
+  //- link(rel='stylesheet' href='assets/css/demo.css')
+  // GOOGLE FONTS
+  link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet')
+  // ICONS
+  link(rel='apple-touch-icon' sizes='76x76' href='assets/img/apple-icon.png')
+  link(rel='icon' type='image/png' sizes='96x96' href='assets/img/favicon.png')
+  script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+
+  //- link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css', rel='stylesheet', crossorigin='anonymous')
+  //- script(src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js', crossorigin='anonymous')
+
+// WRAPPER
+#wrapper
+  // NAVBAR
+  nav.navbar.navbar-default.navbar-fixed-top
+    .brand
+      a(href='index.html')
+        img.img-responsive.logo(src='assets/img/logo.png' alt='Klorofil Logo')
+    include gnb
+  // END NAVBAR
+  // LEFT SIDEBAR
+  include lnb
+  // END LEFT SIDEBAR
+  // MAIN
+  .main
+    // MAIN CONTENT
+    .main-content
+      .container-fluid
+        h3.page-title
+        .row
+          .col-md-11
+            // PANEL HEADLINE
+            .panel.panel-headline
+              .panel-heading
+                h3.panel-title &#xD68C;&#xC758; &#xBAA9;&#xB85D;
+                p.panel-subtitle &#xB4F1;&#xB85D;&#xD55C; &#xD68C;&#xC758; &#xBAA9;&#xB85D;&#xC744; &#xC870;&#xD68C;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+            // END PANEL HEADLINE
+        .row
+          .col-md-11
+            .panel
+              .card.mb-4
+                .card-header
+                .card-body
+                  .table-responsive
+                    table#dataTable.table.table-bordered(width='97%', cellspacing='0')
+                      thead
+                        tr
+                          th 
+                            a(href="javascript:send_check()" ) 삭제
+                          th &#xC81C;&#xBAA9;
+                          th 태그
+                          th &#xD30C;&#xC77C;
+                          th &#xB0A0;&#xC9DC;
+                          th 상태
+                      //- tfoot
+                        //- tr
+                        //-   th
+                        //-     a(href="javascript:send_check()" ) 삭제
+                        //-   th Title
+                        //-   th tag
+                        //-   th file
+                        //-   th date
+                      tbody
+                          -for(var i=0;i<row;i++)
+                            tr
+                              td(name='check')
+                                input(type='checkbox', name='user_CheckBox' class="sended") 
+                              td
+                                a(href="javascript:send_title('"+meeting_data[i].meet_name+"')" ) #{meeting_data[i].meet_name}
+                              if meeting_data[i].meet_hashtag1 == null || meeting_data[i].meet_hashtag2==""
+                                td
+                              else if meeting_data[i].meet_hashtag2 == null || meeting_data[i].meet_hashtag2==""
+                                td  #{'#' + meeting_data[i].meet_hashtag1} asdasd
+                              else if meeting_data[i].meet_hashtag3 == null || meeting_data[i].meet_hashtag3==""
+                                td #{'#' + meeting_data[i].meet_hashtag1} #{'#' + meeting_data[i].meet_hashtag2}
+                              else
+                                td  #{'#' + meeting_data[i].meet_hashtag1} #{'#' + meeting_data[i].meet_hashtag2} #{'#' + meeting_data[i].meet_hashtag3}
+                              td #{meeting_data[i].meet_voice}
+                              td #{meeting_data[i].meet_date}
+                              -if(meeting_data[i].status == 'processing...')
+                                td(style="color:red;") #{meeting_data[i].status}
+                              -else
+                                td(style="color:green;") #{meeting_data[i].status}  
+                  //h3 #{JSON.stringify(hashlist[0][0])}
+                  //h3 #{JSON.stringify(userlist[0])}
+
+  // END MAIN CONTENT
+// END MAIN
+
+// END WRAPPER
+script.
+  function send_title(aa) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/sentimental_total");
+    var post = document.createElement("input");
+    post.setAttribute("type", "hidden");
+    post.setAttribute("name", "meet_name");
+    post.setAttribute("value", aa);
+    form.appendChild(post);
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+script.
+  function send_check() {
+    var j = 0;
+    var cnt = 0;
+    var num_list = new Array();
+    $('input:checkbox[name="user_CheckBox"]').each(function() {
+      if($(this).is(":checked") == true){
+        num_list[cnt] = j;
+        cnt++;
+      }
+      j++;
+    });
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/meeting-list");
+    var post = document.createElement("input");
+    post.setAttribute("type", "hidden");
+    post.setAttribute("name", "send_data");
+    post.setAttribute("value", num_list);
+    form.appendChild(post);
+    document.body.appendChild(form);
+    form.submit();
+    if(cnt == 0){
+      alert("삭제할 회의를 선택해주세요.");
+    }
+    else{
+      alert(cnt+"개의 회의가 삭제됩니다.");
+    }
+  }
+
+script(src='assets/vendor/jquery/jquery.min.js')
+script(src='assets/vendor/bootstrap/js/bootstrap.min.js')
+script(src='assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js')
+script(src='assets/scripts/klorofil-common.js')
+
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js')
+script(src='assets/js/scripts.js')
+

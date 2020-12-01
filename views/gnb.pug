@@ -1,0 +1,63 @@
+.container-fluid
+    .navbar-btn
+        button.btn-toggle-fullwidth(type='button')
+            i.lnr.lnr-arrow-left-circle
+    #navbar-menu
+    ul.nav.navbar-nav.navbar-right
+        if user_id
+            //- li.dropdown
+            //-     a.dropdown-toggle.icon-menu(href='#' data-toggle='dropdown')
+            //-         i.lnr.lnr-alarm
+            //-         span.badge.bg-danger 5
+            //-     ul.dropdown-menu.notifications
+            //-         li
+            //-             a.notification-item(href='#')
+            //-             span.dot.bg-warning
+            //-             | System space is almost full
+            //-         li
+            //-             a.notification-item(href='#')
+            //-             span.dot.bg-danger
+            //-             | You have 9 unfinished tasks
+            //-         li
+            //-             a.notification-item(href='#')
+            //-             span.dot.bg-success
+            //-             | Monthly report is available
+            //-         li
+            //-             a.notification-item(href='#')
+            //-             span.dot.bg-warning
+            //-             | Weekly meeting in 1 hour
+            //-         li
+            //-             a.notification-item(href='#')
+            //-             span.dot.bg-success
+            //-             | Your request has been approved
+            //-         li
+            //-             a.more(href='#') See all notifications
+            li.dropdown
+                a.dropdown-toggle(href='#' data-toggle='dropdown')
+                    img.img-circle(src='assets/img/user_prof.png' alt='Avatar' style='margin-right:2px')
+                    span #{user_id}
+                    i.icon-submenu.lnr.lnr-chevron-down(style='margin-right:2px')
+                ul.dropdown-menu
+                    li
+                        a(href='/page-profile')
+                            i.lnr.lnr-user
+                            span 프로필
+                    li
+                        a(href='/auth/logout')
+                            i.lnr.lnr-exit
+                            span 로그아웃
+        else
+            li.dropdown
+                a.dropdown-toggle(href='#' data-toggle='dropdown')
+                    //- img.img-circle(src='assets/img/user.png' alt='Avatar')
+                    span 로그인을 해주세요 &nbsp;
+                    i.icon-submenu.lnr.lnr-chevron-down
+                ul.dropdown-menu
+                    li
+                        a(href='/login')
+                            i.lnr.lnr-user
+                            span 로그인
+                    li
+                        a(href='/login')
+                            i.lnr.lnr-envelope
+                            span 회원가입
