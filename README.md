@@ -25,7 +25,6 @@ COOKIE_SECRET = ""
 ```
 4) npm start을 터미널에 입력하여 실행시켜줍니다.
 
-[sodam에 사용된 주요 모듈 설명](https://github.com/kingbj940429/Node.JS_Tips_for_me/blob/main/README.md)
 
 # 내역
 ###
